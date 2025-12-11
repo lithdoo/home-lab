@@ -1,0 +1,10 @@
+data-store/
+node_modules/
+packages/scaner/web/ChromeData
+projects/javideo/maxjav/.temp/download
+projects/javideo/maxjav/.temp/image
+projects/javideo/maxjav/.temp/latest
+projects/maxjav/.temp/download
+projects/maxjav/.temp/image
+projects/maxjav/.temp/latest
+projects/hlbdy/.temp/video
