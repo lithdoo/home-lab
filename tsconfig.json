@@ -1,8 +1,8 @@
 {
   "include": [
     "/**/*",
-    "../packages/**/*",
-    "../projects/**/*"
+    "./packages/**/*",
+    "./projects/**/*"
   ],
   "exclude": [
     "src/**/__tests__/*"
@@ -15,10 +15,10 @@
     "esModuleInterop": true,
     "paths": {
       "@pkg/*": [
-        "../packages/*"
+        "./packages/*"
       ],
       "@proj/*": [
-        "/*"
+        "./projects"
       ],
     },
   }
