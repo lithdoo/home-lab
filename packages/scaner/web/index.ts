@@ -65,8 +65,8 @@ export class WebPageScaner {
     async start() {
         if (this.current) return
         const current = this.tasks.shift()
-        if (!current) return
         this.current = current
+        if (!this.current) return
         await this.deal(current)
         await new Promise(res => setTimeout(res,
             Math.random() * 5 * 1000 + 2000
@@ -108,11 +108,50 @@ export class WebPageScaner {
         })
     }
 
+    request(url: string, option: {
+        filter: (url: string) => boolean,
+        timeout: () => Promise<void>
+    }, waitForSelector?: string) {
+        const { filter, timeout } = option
+        return new Promise<Request[]>((onResolve, onError) => {
+            const onSuccess = () => {
+                onResolve(task.requests)
+            }
+            const task: ScanerTask = {
+                url, waitForSelector, onSuccess, onError, requests: [], responds: [],
+                requestFilter: filter, timeout
+            }
+            this.run(task)
+        })
+    }
+
+
     currentTask?: ScanerTask
 
     private async deal(task: ScanerTask) {
+
+        // const page = await this.page.target
+        const page = await getChromePage()
+
+        page.on('request', (request) => {
+            if (!task.requestFilter) return
+
+            if (task.requestFilter(request.url())) {
+                task.requests.push(request)
+            }
+        });
+
+        // 监听所有响应，但处理特定一个
+        page.on('response', (response) => {
+            if (!task.respondFilter) return
+
+            if (task.respondFilter(response.url())) {
+                task.responds.push(response)
+            }
+        });
+
+
         try {
-            const page = await this.page.target
             await page.goto(task.url, {
                 timeout: 1000 * 60 * 20
             })
@@ -128,7 +167,10 @@ export class WebPageScaner {
                 task.onSuccess(html)
             }
         } catch (e: any) {
-            task.onError(e)
+            console.error(e.message)
+            task?.onError?.(e)
+        } finally {
+            page.close()
         }
 
     }

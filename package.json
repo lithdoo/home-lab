@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@renmu/m3u8-downloader": "^0.4.1",
     "@types/node": "^24.10.1",
     "better-sqlite3": "^12.5.0",
     "jsdom": "^27.2.0",

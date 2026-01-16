@@ -1,11 +1,15 @@
 
 import { getBody, WebPageScaner } from '@pkg/scaner/web'
-import { downloadM3U8, waitSec } from '@pkg/scaner/web/playwright'
+import { downloadM3U8toFile } from '@pkg/scaner/web/m3u8.utils'
+import { downloadM3U8, waitSec } from '@pkg/scaner/web/puppeteer'
+import { kMaxLength } from 'node:buffer'
+// import { downloadM3U80 } from '@pkg/scaner/web/puppeteer'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { URL } from 'node:url'
 
 const scaner = new WebPageScaner()
+
 
 function sanitizeFilename(
     filename: string,
@@ -57,11 +61,20 @@ const main = async () => {
     let i = 0
     while (i < 100) {
         i = i + 1
+        // const paggUrl = i === 1
+        //     ? 'https://cake.tdbzzsmy.com/'
+        //     : `https://cake.tdbzzsmy.com/page/${i}`
+
+        const hostname = 
+            // 'cake.mmybmwvv.cc' 
+            // 'analyst.poggqlw.cc'
+            'cake.tdbzzsmy.com/'
         const paggUrl = i === 1
-            ? 'https://cake.tdbzzsmy.com/'
-            : `https://cake.tdbzzsmy.com/page/${i}`
+            ? `https://${hostname}/category/xyrg/`
+            : `https://${hostname}/category/xyrg/${i}/`
 
 
+        console.log(paggUrl)
         const html = await scaner.read(
             paggUrl, 'div.container article a'
         )
@@ -76,10 +89,10 @@ const main = async () => {
             }
         })
             .filter(v => {
-                console.log(v)
                 return !!v.header
             })
             .map(v => {
+                console.log((v.ele as HTMLAnchorElement).href)
                 return {
                     link: (v.ele as HTMLAnchorElement).href,
                     title: v.header.textContent.trim()
@@ -88,36 +101,41 @@ const main = async () => {
             .filter(v => !!v.title)
 
         await links.reduce(async (res, link) => {
-            await res
+
+            try{
+                await res
+            }catch(e){
+                console.error(e.message)
+            }
 
             if (doneSet.has(link.link)) return
 
             const title = link.title
 
-            console.log(URL.parse(paggUrl).origin + link.link)
-
-            const response = await scaner.respond(
+            const req = await scaner.request(
                 URL.parse(paggUrl).origin + link.link,
 
                 {
                     filter: (url) => url.toLocaleLowerCase().includes('.m3u8'),
-                    timeout: () => new Promise(res => setTimeout(res, 10000))
+                    timeout: () => new Promise(res => setTimeout(res, 10000)),
                 },
                 'div#post[role="main"]'
             )
 
             const files: string[] = []
 
-            await [...new Set(response.map(v => v.url()))].reduce(async (res, v) => {
+            await [...new Set(req.map(v => v.url()))].reduce(async (res, v) => {
                 await res
-                console.log(v)
                 let i = 0
                 let filePath = () => path.resolve(__dirname, `.temp/video/${sanitizeFilename(title)}.${i}.mp4`)
+                // let filePath = () => path.resolve('C:\\Users\\lithd\\Videos\\temp', `${sanitizeFilename(title)}.${i}.mp4`)
                 while (existsSync(filePath())) {
                     i = i + 1
                 }
-                console.log(`downloaded: ${sanitizeFilename(title)}.${i}.mp4`)
-                await downloadM3U8(v, filePath())
+                console.log(`start file: ${sanitizeFilename(title)}.${i}.mp4`)
+                console.log(`start url: ${v}`)
+                // await downloadM3U80(v, filePath())
+                await downloadM3U8toFile(v, filePath())
                 files.push(filePath())
             }, Promise.resolve())
 
