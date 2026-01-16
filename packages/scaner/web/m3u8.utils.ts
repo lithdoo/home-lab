@@ -299,7 +299,7 @@ export async function createLoaclFile(m3u8Url: string, downloadDir: string, rawf
             await downloadToFile(segmentUrl, filePath)
             console.log(`下载完成: ${fileName} 进度 ${i + 1}/${segmentUrls.length}`);
             localContent = localContent.replace(segmentUrl, filePath.replaceAll('\\', '/'))
-            await waitSec(1)
+            await waitSec(0)
         }
 
         console.log(`所有切片下载完成，共 ${segmentUrls.length} 个文件。`);

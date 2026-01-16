@@ -139,7 +139,7 @@ const main = async () => {
                 files.push(filePath())
             }, Promise.resolve())
 
-            await waitSec(10)
+            await waitSec(3)
             saveDone(link.link, files)
 
         }, Promise.resolve())
