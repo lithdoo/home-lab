@@ -1,6 +1,8 @@
 {
   "include": [
+    "/**/*",
     "../packages/**/*",
+    "../projects/**/*"
   ],
   "exclude": [
     "src/**/__tests__/*"
@@ -8,11 +10,16 @@
   "compilerOptions": {
     "target": "es2021",
     "module": "commonjs",
-    "esModuleInterop":true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "esModuleInterop": true,
     "paths": {
       "@pkg/*": [
         "../packages/*"
-      ]
-    }
+      ],
+      "@proj/*": [
+        "/*"
+      ],
+    },
   }
 }
