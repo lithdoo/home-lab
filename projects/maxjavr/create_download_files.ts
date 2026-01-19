@@ -1,8 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-const INPUT_FILE = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\missing_download_files.jsonl'
-const OUTPUT_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__OBJ__download_file'
+const INPUT_FILE = path.join(__dirname, 'data-store', '.new_maxjavr', 'missing_download_files.jsonl')
+const OUTPUT_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__OBJ__download_file')
 
 interface DownloadFileData {
     code_dir: string

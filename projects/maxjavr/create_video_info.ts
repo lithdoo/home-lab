@@ -1,13 +1,12 @@
-
 import { getBody } from '@pkg/scaner/web'
 import * as fs from 'fs'
 import * as path from 'path'
 
 const body = getBody()
 
-const OBJ_VIDEO_PAGE_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__OBJ__video_page'
-const LIB_MAXJAVR_INFO_HTML_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__LIB__maxjavr-info-html'
-const REF_VIDEO_INFO_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__REF__video_info'
+const OBJ_VIDEO_PAGE_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__OBJ__video_page')
+const LIB_MAXJAVR_INFO_HTML_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__LIB__maxjavr-info-html')
+const REF_VIDEO_INFO_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__REF__video_info')
 
 export interface VideoPageJson {
     url: string

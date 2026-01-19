@@ -1,4 +1,3 @@
-
 import { getBody, WebPageScaner } from '@pkg/scaner/web'
 import { sleep } from 'bun'
 import * as fs from 'fs'
@@ -7,8 +6,8 @@ import * as path from 'path'
 const body = getBody()
 const scaner = new WebPageScaner()
 
-const OBJ_VIDEO_PAGE_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__OBJ__video_page'
-const LIB_MAXJAVR_INFO_HTML_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__LIB__maxjavr-info-html'
+const OBJ_VIDEO_PAGE_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__OBJ__video_page')
+const LIB_MAXJAVR_INFO_HTML_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__LIB__maxjavr-info-html')
 
 const readList = (html: string) => {
     body.innerHTML = html

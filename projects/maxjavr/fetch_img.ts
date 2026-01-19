@@ -2,9 +2,9 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { URL } from 'url'
 
-const REF_VIDEO_INFO_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__REF__video_info'
-const LIB_MAXJAVR_INFO_IMG_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__LIB__maxjavr-info-img'
-const OUTPUT_JSONL_FILE = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\fetched_images.jsonl'
+const REF_VIDEO_INFO_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__REF__video_info')
+const LIB_MAXJAVR_INFO_IMG_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__LIB__maxjavr-info-img')
+const OUTPUT_JSONL_FILE = path.join(__dirname, 'data-store', '.new_maxjavr', 'fetched_images.jsonl')
 
 interface VideoInfoJson {
     video_code: string

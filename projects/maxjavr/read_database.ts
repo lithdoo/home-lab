@@ -2,11 +2,11 @@ import { Database } from 'bun:sqlite';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const DB_PATH = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.maxjavr_data\\index.db';
-const OUTPUT_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__REF__video_info';
-const DOWNLOAD_FILE_OUTPUT_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\download_file';
-const VIDEO_PAGE_OUTPUT_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\video_page';
-const KEYWORD_OUTPUT_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\keyword';
+const DB_PATH = path.join(__dirname, 'data-store', '.maxjavr_data', 'index.db');
+const OUTPUT_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__REF__video_info');
+const DOWNLOAD_FILE_OUTPUT_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', 'download_file');
+const VIDEO_PAGE_OUTPUT_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', 'video_page');
+const KEYWORD_OUTPUT_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', 'keyword');
 
 export function exportVideoInfoToJson(): void {
   if (!fs.existsSync(DB_PATH)) {

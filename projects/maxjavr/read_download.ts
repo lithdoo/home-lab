@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-const TREE_FILE_PATH = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\目录树\\_EXTRA20260117201359_目录树.txt'
+const TREE_FILE_PATH = path.join(__dirname, 'data-store', '.new_maxjavr', '目录树', '_EXTRA20260117201359_目录树.txt')
 
 export interface TreeNode {
     name: string
@@ -17,7 +17,7 @@ export interface DownloadFileData {
     keyword_dir: string
 }
 
-const DOWNLOAD_FILE_DIR = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__OBJ__download_file'
+const DOWNLOAD_FILE_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__OBJ__download_file')
 
 export const parseTreeFile = (filePath: string = TREE_FILE_PATH): TreeNode[] => {
     if (!fs.existsSync(filePath)) {
@@ -235,7 +235,7 @@ if (require.main === module) {
     const tree = parseTreeFile()
     const data = parseDownloadFilesFromTree(tree)
 
-    const downloadFileDir = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__OBJ__download_file'
+    const downloadFileDir = DOWNLOAD_FILE_DIR
     const existingCodeDirs = new Set<string>()
     if (fs.existsSync(downloadFileDir)) {
         const files = fs.readdirSync(downloadFileDir)
@@ -253,7 +253,7 @@ if (require.main === module) {
 
     console.log(`Total: ${totalData}, Existing: ${existingCount}, New: ${missingCount}\n`)
 
-    const outputDir = 'd:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr'
+    const outputDir = path.join(__dirname, 'data-store', '.new_maxjavr')
     const outputFile = path.join(outputDir, 'missing_download_files.jsonl')
     if (fs.existsSync(outputFile)) {
         fs.unlinkSync(outputFile)

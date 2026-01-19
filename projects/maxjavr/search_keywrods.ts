@@ -2,8 +2,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import toml from '@iarna/toml'
 
-const KEYWORDS_FILE = 'D:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\search_keywords.txt'
-const VIDEO_INFO_DIR = 'D:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__REF__video_info'
+const KEYWORDS_FILE = path.join(__dirname, 'data-store', '.new_maxjavr', 'search_keywords.txt')
+const VIDEO_INFO_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__REF__video_info')
 
 export interface DownloadInfo {
     url: string
@@ -137,17 +137,8 @@ export const isVideoMatchSearch = (video: VideoInfoData, searchQuery: string): b
     return true
 }
 
-/**
- * 写个函数，入参为 VideoInfoData 和 一个搜索字符串
- * 在 D:\Coding\home-lab\projects\maxjavr\data-store\.file-view-store\[FILE_VIEW]maxjavr_keywords 路径下创建（已存在则忽略）和搜索字符串同名的目录（如果包含+ 则替换为_）
- * 在 D:\Coding\home-lab\projects\maxjavr\data-store\.new_maxjavr\__LIB__maxjavr-info-img 找到于 VideoInfoData.video_code 匹配的图片文件(后缀可能为 jpg，jpeg，png 或其大写)
- * 将图片复制到上述目录中，并为图片创建 projects\maxjavr\data-store\.file-view-store\file-view-directory-specification.md 所定义的描述文件
- * 其 title 和 desc 来自于 VideoInfoData , tags 来自于 VideoInfoData.downloads 中的 hostname(需要去重)
- * links 来自于 VideoInfoData.downloads 中的 url 和 filename
- */
-
-const FILE_VIEW_KEYWORDS_DIR = 'D:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.file-view-store\\[FILE_VIEW]maxjavr_keywords'
-const VIDEO_IMG_DIR = 'D:\\Coding\\home-lab\\projects\\maxjavr\\data-store\\.new_maxjavr\\__LIB__maxjavr-info-img'
+const FILE_VIEW_KEYWORDS_DIR = path.join(__dirname, 'data-store', '.file-view-store', '[FILE_VIEW]maxjavr_keywords')
+const VIDEO_IMG_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__LIB__maxjavr-info-img')
 
 const createSearchKeywordDirectory = (searchQuery: string): string => {
     const dirName = searchQuery.replace(/\+/g, '_')
@@ -226,13 +217,6 @@ export const createVideoForSearch = (video: VideoInfoData, searchQuery: string):
     copyImageWithMetadata(imagePath, destDir, video)
 }
 
-
-/**
- * 写一个函数写通过 readSearchKeywords 读取所有的搜索字符串
- * 读取  VIDEO_INFO_DIR 下的文件列表，并对逐一对文件（文件内容通过 readVideoInfo 读取，只读一次）和字符串通过 isVideoMatchSearch 匹配
- * 文件之间需要间隔 10 ms, 但搜索关键字之间不需要间隔
- * 如果匹配成功，则调用 createVideoForSearch 创建搜索结果
- */
 
 const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
 
