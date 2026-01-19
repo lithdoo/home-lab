@@ -1,5 +1,6 @@
 
 import { getBody, WebPageScaner } from '@pkg/scaner/web'
+import { sleep } from 'bun'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -46,7 +47,8 @@ const checkAndUpdateVideoPage = async (video_page: any): Promise<boolean> => {
     const jsonExists = fs.existsSync(jsonPath)
     if (jsonExists) {
         const existingData = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))
-        if (existingData.page_update_date === video_page.page_update_date) {
+        if (existingData.page_update_date === video_page.page_update_date
+        ) {
             console.log(`  [Skip] ${video_page.code} (no changes)`)
             return false
         }
@@ -91,10 +93,10 @@ const main = async () => {
     let updateCount = 0
     let skipCount = 0
 
-    while (i < 40) {
+    while (i < 1200) {
         i = i + 1
-        const url = pageUrl(i + 80)
-        console.log(`\n=== Page ${i + 81}: ${url} ===`)
+        const url = pageUrl(i + 134)
+        console.log(`\n=== Page ${i + 135}: ${url} ===`)
 
         try {
             const html = await scaner.read(
@@ -116,7 +118,7 @@ const main = async () => {
                     skipCount++
                 }
             }
-
+            sleep(1000 + Math.random() * 4000)
         } catch (err) {
             console.error(`Error reading page ${i + 1}:`, err)
             break
