@@ -5,9 +5,34 @@ import * as path from 'path'
 
 const body = getBody()
 const scaner = new WebPageScaner()
+const STATE_FILE = path.join(__dirname, 'data-store', '.new_maxjavr', '.fetch_state.json');
+const OBJ_VIDEO_PAGE_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__OBJ__video_page');
+const LIB_MAXJAVR_INFO_HTML_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__LIB__maxjavr-info-html');
 
-const OBJ_VIDEO_PAGE_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__OBJ__video_page')
-const LIB_MAXJAVR_INFO_HTML_DIR = path.join(__dirname, 'data-store', '.new_maxjavr', '__LIB__maxjavr-info-html')
+const readStartPage = (): number => {
+    try {
+        if (fs.existsSync(STATE_FILE)) {
+            const content = fs.readFileSync(STATE_FILE, 'utf-8');
+            const state = JSON.parse(content);
+            return state.startPage ?? 1;
+        }
+    } catch (err) {
+        console.error('Error reading state file:', err);
+    }
+    return 1;
+};
+
+const writeStartPage = (page: number): void => {
+    try {
+        const stateDir = path.dirname(STATE_FILE);
+        if (!fs.existsSync(stateDir)) {
+            fs.mkdirSync(stateDir, { recursive: true });
+        }
+        fs.writeFileSync(STATE_FILE, JSON.stringify({ startPage: page }, null, 2), 'utf-8');
+    } catch (err) {
+        console.error('Error writing state file:', err);
+    }
+};
 
 const readList = (html: string) => {
     body.innerHTML = html
@@ -81,6 +106,8 @@ const checkAndUpdateVideoPage = async (video_page: any): Promise<boolean> => {
 }
 
 const main = async () => {
+    let startPage = readStartPage();
+    console.log(`Starting from page: ${startPage}`);
 
     const rootUrl = 'https://maxjav.xyz/category/vr/'
     const pageUrl = (pageNo = 0) => {
@@ -88,14 +115,13 @@ const main = async () => {
         return `${rootUrl}page/${pageNo + 1}/`
     }
 
-    let i = -1
+    let i = startPage
     let updateCount = 0
     let skipCount = 0
 
-    while (i < 1200) {
-        i = i + 1
-        const url = pageUrl(i + 134)
-        console.log(`\n=== Page ${i + 135}: ${url} ===`)
+    while (i < 3000) {
+        const url = pageUrl(i)
+        console.log(`\n=== Page ${i}: ${url} ===`)
 
         try {
             const html = await scaner.read(
@@ -122,6 +148,10 @@ const main = async () => {
             console.error(`Error reading page ${i + 1}:`, err)
             break
         }
+        
+        // 保存下一个起始页码
+        writeStartPage(i + 1);
+        i = i + 1
     }
 
     console.log(`\n=== Summary ===`)

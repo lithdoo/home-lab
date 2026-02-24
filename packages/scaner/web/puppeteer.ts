@@ -53,9 +53,9 @@ export const openChrome2 = () => new Promise(async (res) => {
 
 // 1. 启动浏览器
 const browser = puppeteer.launch({
-    headless: false, // 有界面模式，设为 true 则无头模式
-    defaultViewport: null, // 使用默认视口大小
-    args: ['--start-maximized'] // 启动时最大化窗口
+    headless: false,
+    defaultViewport: { width: 480, height: 240 },
+    args: ['--window-size=480,240']
 });
 
 export const getChromePage = async () => {

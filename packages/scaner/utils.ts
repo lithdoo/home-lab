@@ -17,3 +17,8 @@ export class ManualPromise<T> {
         })
     }
 }
+
+
+
+
+export  { default as  toml} from '@iarna/toml'
